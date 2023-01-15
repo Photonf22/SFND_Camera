@@ -1,0 +1,3 @@
+/lidar/SFND_Camera/Lesson 3 - Engineering a Collision Detection System/Estimating TTC with Camera/TTC_camera/build/CMakeFiles/compute_ttc_camera.dir
+/lidar/SFND_Camera/Lesson 3 - Engineering a Collision Detection System/Estimating TTC with Camera/TTC_camera/build/CMakeFiles/edit_cache.dir
+/lidar/SFND_Camera/Lesson 3 - Engineering a Collision Detection System/Estimating TTC with Camera/TTC_camera/build/CMakeFiles/rebuild_cache.dir

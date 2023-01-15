@@ -8,6 +8,7 @@
 
 using namespace std;
 
+
 // Purpose: Compute time-to-collision (TTC) based on keypoint correspondences in successive images
 // Notes: 
 // - please take a look at the main()-function first
@@ -56,11 +57,22 @@ void computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPo
 
     // compute camera-based TTC from distance ratios
     double meanDistRatio = std::accumulate(distRatios.begin(), distRatios.end(), 0.0) / distRatios.size();
-
-    double dT = 1 / frameRate;
-    TTC = -dT / (1 - meanDistRatio);
-
+    
+    //double dT = 1 / frameRate;
+    //TTC = -dT / (1 - meanDistRatio);
+    double medianDistRatio = 0;
     // TODO: STUDENT TASK (replacement for meanDistRatio)
+    if(distRatios.size() & 2 == 0)
+    {
+        medianDistRatio= (distRatios.size() / 2) - 1;
+    }
+    else
+    {
+        medianDistRatio= (distRatios.size() / 2) - 0.5;
+    }
+    
+    double dT = 1 / frameRate;
+    TTC = -dT / (1 - medianDistRatio);
 }
 
 int main()

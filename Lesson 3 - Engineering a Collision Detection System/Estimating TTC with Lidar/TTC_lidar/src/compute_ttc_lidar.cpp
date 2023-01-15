@@ -8,6 +8,9 @@
 
 using namespace std;
 
+// Here we fint the closest point to us or the mininum in the x axis. When we min the minumum of the previous measurent
+// and the current measurement we can then measure the time to collision or the time it would take for us to collide
+// car in front of us. 
 void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
                      std::vector<LidarPoint> &lidarPointsCurr, double &TTC)
 {
