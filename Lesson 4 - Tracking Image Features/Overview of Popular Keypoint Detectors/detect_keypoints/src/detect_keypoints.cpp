@@ -28,7 +28,7 @@ void detKeypoints1()
     double t = (double)cv::getTickCount();
     cv::goodFeaturesToTrack(imgGray, corners, maxCorners, qualityLevel, minDistance, cv::Mat(), blockSize, useHarris, k);
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-    cout << "Shi-Tomasi with n= " << corners.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+    //cout << "Shi-Tomasi with n= " << corners.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
 
     for (auto it = corners.begin(); it != corners.end(); ++it)
     { // add corners to result vector
@@ -38,19 +38,55 @@ void detKeypoints1()
         newKeyPoint.size = blockSize;
         kptsShiTomasi.push_back(newKeyPoint);
     }
-
+    cout << "Shi-Tomasi with keypoints= " << kptsShiTomasi.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
     // visualize results
     cv::Mat visImage = img.clone();
     cv::drawKeypoints(img, kptsShiTomasi, visImage, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
     string windowName = "Shi-Tomasi Results";
     cv::namedWindow(windowName, 1);
     imshow(windowName, visImage);
-
+    cv::waitKey(0);
     // TODO: use the OpenCV library to add the FAST detector
     // in addition to the already implemented Shi-Tomasi 
     // detector and compare both algorithms with regard to 
     // (a) number of keypoints, (b) distribution of 
-    // keypoints over the image and (c) processing speed.
+    // keypoints over the image and (c) processing speed.   
+    // FAST Detector
+
+    vector<cv::KeyPoint> kptsFAST;
+    int threshold_Fast = 30;
+    bool non_maxSuppression = true;
+    cv::FastFeatureDetector::DetectorType type_fast =cv:: FastFeatureDetector::TYPE_9_16;
+    double t2 = (double)cv::getTickCount();
+
+    cv::FAST(imgGray,kptsFAST,threshold_Fast, non_maxSuppression, type_fast);
+
+    t2 = ((double)cv::getTickCount() - t2) / cv::getTickFrequency();
+    cout << "FAST detector with n= " << kptsFAST.size() << " keypoints in " << 1000 * t2 / 1.0 << " ms" << endl;
+
+    // visualize results
+    cv::Mat visImage2 = img.clone();
+    cv::drawKeypoints(img, kptsFAST, visImage2, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+    string windowName2 = "Fast Corner Results";
+    cv::namedWindow(windowName2, 2);
+    imshow(windowName2, visImage2);
+    cv::waitKey(0);
+
+    // Different way of doing the fast detector by creating a class for the detector and the one above is just a function
+    // wrapper that does FAST detection for you without initializing a class but with default values.
+    vector<cv::KeyPoint> kptsFAST2;
+    cv::Ptr<cv::Feature2D> Fast = cv::FastFeatureDetector::create(threshold_Fast,non_maxSuppression,type_fast);
+    double t3 = (double)cv::getTickCount();
+    Fast->detect(imgGray, kptsFAST2);
+    t3 = ((double)cv::getTickCount() - t3) / cv::getTickFrequency();
+    cout << "FAST detector with n= " << kptsFAST2.size() << " keypoints in " << 1000 * t3 / 1.0 << " ms" << endl;
+
+    // visualize results
+    cv::drawKeypoints(img, kptsFAST2, visImage2, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+    string windowName3 = "Fast Corner Results";
+    cv::namedWindow(windowName3, 3);
+    imshow(windowName3, visImage2);
+    cv::waitKey(0);
 }
 
 int main()

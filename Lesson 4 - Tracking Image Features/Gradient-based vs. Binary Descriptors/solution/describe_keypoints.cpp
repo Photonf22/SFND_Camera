@@ -4,8 +4,7 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/features2d.hpp>
-#include <opencv2/xfeatures2d.hpp>
-#include <opencv2/xfeatures2d/nonfree.hpp>
+#include <~/Downloads/opencv_contrib/modules/xfeatures2d/include/opencv2/xfeatures2d.hpp>
 
 using namespace std;
 

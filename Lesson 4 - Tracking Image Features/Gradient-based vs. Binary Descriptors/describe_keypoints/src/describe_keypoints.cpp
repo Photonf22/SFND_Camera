@@ -17,6 +17,9 @@ void descKeypoints1()
     cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
 
     // BRISK detector / descriptor
+    // this Feature Detector variable allows us to plug in many different types of detectors! BRISK, SIFT , and many others
+    // it is convinient because we don't need to find the type of detector below when we call the detector function
+    // it just prepares the data structure
     cv::Ptr<cv::FeatureDetector> detector = cv::BRISK::create();
     vector<cv::KeyPoint> kptsBRISK;
 
@@ -44,6 +47,31 @@ void descKeypoints1()
     // time for both steps and compare both BRISK and SIFT
     // with regard to processing speed and the number and 
     // visual appearance of keypoints.
+    cv::Ptr<cv::FeatureDetector> detector2 = cv::SIFT::create();
+
+    vector<cv::KeyPoint> kptsSIFT;
+
+    double t2 = (double)cv::getTickCount();
+    detector2->detect(imgGray, kptsSIFT);
+    t2 = ((double)cv::getTickCount() - t2) / cv::getTickFrequency();
+    cout << "SIFT detector with n= " << kptsSIFT.size() << " keypoints in " << 1000 * t2 / 1.0 << " ms" << endl;
+
+    cv::Ptr<cv::DescriptorExtractor> descriptor2 = cv::SIFT::create();
+    
+    cv::Mat descSIFT;
+    t2 = (double)cv::getTickCount();
+    descriptor2->compute(imgGray, kptsBRISK, descSIFT);
+    t2 = ((double)cv::getTickCount() - t2) / cv::getTickFrequency();
+    cout << "SIFT descriptor in " << 1000 * t2 / 1.0 << " ms" << endl;
+
+    // visualize results
+    cv::Mat visImage2 = img.clone();
+    cv::drawKeypoints(img, kptsSIFT, visImage2, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+    string windowName2 = "SIFT Results";
+    cv::namedWindow(windowName2, 1);
+    imshow(windowName2, visImage2);
+    cv::waitKey(0);
+    
 
 }
 
