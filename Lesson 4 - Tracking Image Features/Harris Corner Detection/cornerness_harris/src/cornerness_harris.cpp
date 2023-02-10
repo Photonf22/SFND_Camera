@@ -41,7 +41,10 @@ std::vector<cv::KeyPoint> NMS_Algorithm(cv::Mat CornerHarris_img, int apertureSi
                 }
                 
             }
-            
+            if (!bOverlap)
+                {                                     // only add new key point if no overlap has been found in previous NMS
+                    keypoints.push_back(newKeyPoint); // store new keypoint in dynamic list
+                }
             }
         }
     }
